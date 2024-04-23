@@ -1,0 +1,4 @@
+# The sizes represent the number of blocks for each direction from the center of the territory
+territories:
+  min-size: 5
+  max-size: 50
