@@ -23,7 +23,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.32")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
     compileOnly(fileTree("D:\\Local Minecraft Server\\plugins") { include("bukkit-utils.jar") })
-
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
 }
 

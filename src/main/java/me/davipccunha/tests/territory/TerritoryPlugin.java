@@ -53,14 +53,10 @@ public class TerritoryPlugin extends JavaPlugin {
 
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null)
             getLogger().warning("ProtocolLib not found. Some features may not work properly.");
-
-        InteractiveInventory.createActionItem(null, null, null, null);
-
     }
 
     private void registerListeners(Listener... listeners) {
         PluginManager pluginManager = getServer().getPluginManager();
-
         for (Listener listener : listeners) pluginManager.registerEvents(listener, this);
     }
 
