@@ -2,6 +2,7 @@ package me.davipccunha.tests.territory.command;
 
 import me.davipccunha.tests.territory.TerritoryPlugin;
 import me.davipccunha.tests.territory.command.subcommand.*;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,8 +50,8 @@ public class TerrenoCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            sender.sendMessage("§cUso: " + COMMAND_USAGE);
-            return false;
+            Bukkit.dispatchCommand(player, "terreno info");
+            return true;
         }
 
         TerrenoSubCommand subCommand = this.subCommands.get(args[0]);

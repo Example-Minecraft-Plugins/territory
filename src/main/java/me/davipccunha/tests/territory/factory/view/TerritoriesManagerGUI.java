@@ -40,6 +40,8 @@ public class TerritoriesManagerGUI {
             // Some blocks don't have an item representation, such as water, lava, air, etc.
             final ItemStack finalIcon = icon == null ? defaultIcon : icon;
 
+            if (finalIcon == null) continue;
+
             finalIcon.setAmount(i);
             final int slot = TerritoryManagersGUIUtil.getNextSlot(i - 1);
 
