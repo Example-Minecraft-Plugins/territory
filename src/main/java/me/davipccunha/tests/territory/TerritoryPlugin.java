@@ -9,7 +9,6 @@ import me.davipccunha.tests.territory.model.Territory;
 import me.davipccunha.tests.territory.model.TerritoryInput;
 import me.davipccunha.tests.territory.model.TerritoryUser;
 import me.davipccunha.utils.cache.RedisCache;
-import me.davipccunha.utils.inventory.InteractiveInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -24,16 +23,17 @@ public class TerritoryPlugin extends JavaPlugin {
     private RedisCache<TerritoryUser> userRedisCache;
 
     // A TerritoryInput is a class that contains the action the input refers to and the location of the territory
+    // TODO: Input may be taken using an AnvilInventory by getting the displayName of the resulting item
     private final HashMap<String, TerritoryInput> awaitingTerritoryInput = new HashMap<>();
 
     @Override
     public void onEnable() {
         this.init();
-        getLogger().info("Dynamic Economy plugin loaded!");
+        getLogger().info("Territory plugin loaded!");
     }
 
     public void onDisable() {
-        getLogger().info("Dynamic Economy plugin unloaded!");
+        getLogger().info("Territory plugin unloaded!");
     }
 
     private void init() {
@@ -61,8 +61,8 @@ public class TerritoryPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        this.getCommand("terreno").setExecutor(new TerrenoCommand(this));
-        this.getCommand("terrenos").setExecutor(new TerrenosCommand(this));
+        getCommand("terreno").setExecutor(new TerrenoCommand(this));
+        getCommand("terrenos").setExecutor(new TerrenosCommand(this));
     }
 
     private void loadCaches() {

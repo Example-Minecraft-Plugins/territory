@@ -52,11 +52,13 @@ bukkit {
 
     commands {
         register("terreno") {
+            aliases = listOf("t")
             description = "Territories basic command."
             permission = "territory.command"
         }
 
         register("terrenos") {
+            aliases = listOf("ts")
             description = "Show all user's territories."
             permission = "territory.command"
         }
