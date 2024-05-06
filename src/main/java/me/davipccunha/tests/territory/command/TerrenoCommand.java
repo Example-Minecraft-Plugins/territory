@@ -47,14 +47,14 @@ public class TerrenoCommand implements CommandExecutor {
             return false;
         }
 
-        Player player = (Player) sender;
+        final Player player = (Player) sender;
 
         if (args.length == 0) {
             Bukkit.dispatchCommand(player, "terreno info");
             return true;
         }
 
-        TerrenoSubCommand subCommand = this.subCommands.get(args[0]);
+        final TerrenoSubCommand subCommand = this.subCommands.get(args[0]);
 
         if (subCommand == null) {
             sender.sendMessage("§cSubcomando não encontrado.");

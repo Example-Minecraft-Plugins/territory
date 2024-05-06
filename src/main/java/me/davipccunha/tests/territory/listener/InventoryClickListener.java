@@ -10,6 +10,7 @@ import me.davipccunha.tests.territory.factory.view.TerritoryMemberManagerGUI;
 import me.davipccunha.tests.territory.model.Territory;
 import me.davipccunha.tests.territory.model.TerritoryBlock;
 import me.davipccunha.tests.territory.model.TerritoryInput;
+import me.davipccunha.tests.territory.model.TerritoryUser;
 import me.davipccunha.utils.item.NBTHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,17 +25,18 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     private void onInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getInventory();
+        final Inventory inventory = event.getInventory();
 
         if (inventory == null) return;
         if (event.getCurrentItem() == null) return;
 
-        String inventoryName = inventory.getName();
+        final String inventoryName = inventory.getName();
         if (!inventoryName.equals("Gerenciar Terreno")
                 && !inventoryName.equals("Gerenciar Membros")
                 && !inventoryName.contains("Permissões de ")
                 && !inventoryName.equals("Gerenciar Banimentos")
-                && !inventoryName.equals("Seus Terrenos"))
+                && !inventoryName.equals("Seus Terrenos")
+                && !inventoryName.equals("Abandonar Terreno"))
             return;
 
         event.setCancelled(true);
@@ -46,16 +48,16 @@ public class InventoryClickListener implements Listener {
 
         if (player == null) return;
 
-        ItemStack clickedItem = event.getCurrentItem();
-        String action = NBTHandler.getNBT(clickedItem, "action");
-        String territoryLocation = NBTHandler.getNBT(clickedItem, "location");
+        final ItemStack clickedItem = event.getCurrentItem();
+        final String action = NBTHandler.getNBT(clickedItem, "action");
+        final String territoryLocation = NBTHandler.getNBT(clickedItem, "location");
 
         if (action == null || territoryLocation == null) return;
 
-        TerritoryCache cache = plugin.getTerritoryCache();
+        final TerritoryCache cache = plugin.getTerritoryCache();
 
-        TerritoryBlock center = TerritoryBlock.deserialize(territoryLocation);
-        Territory territory = cache.getTerritory(center.getX(), center.getZ());
+        final TerritoryBlock center = TerritoryBlock.deserialize(territoryLocation);
+        final Territory territory = cache.getTerritory(center.getX(), center.getZ());
 
         if (territory == null) return;
 
@@ -178,6 +180,27 @@ public class InventoryClickListener implements Listener {
                 player.teleport(center.toLocation(player.getLocation().getPitch(), player.getLocation().getYaw()).add(0, 1, 0));
                 player.sendMessage(String.format("§aVocê foi teleportado para o terreno %s.", center));
 
+                break;
+
+            // Abandonar Terreno
+            case "confirm-abandon":
+                plugin.getTerritoryCache().remove(territory);
+
+                final TerritoryUser territoryUser = plugin.getUserRedisCache().get(player.getName());
+                territoryUser.removeTerritory(territory.getCenter());
+
+                plugin.getUserRedisCache().add(player.getName(), territoryUser);
+
+                if (territoryUser.getTerritories().isEmpty())
+                    plugin.getUserRedisCache().remove(player.getName());
+
+                player.sendMessage("§aVocê abandonou o terreno com sucesso.");
+                player.closeInventory();
+                break;
+
+            case "cancel-abandon":
+                player.sendMessage("§aVocê cancelou o abandono do terreno.");
+                player.closeInventory();
                 break;
         }
     }

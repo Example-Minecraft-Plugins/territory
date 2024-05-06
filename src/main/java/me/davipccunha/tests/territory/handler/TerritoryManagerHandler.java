@@ -52,11 +52,10 @@ public class TerritoryManagerHandler {
         player.sendMessage(String.format("§aO jogador §f%s §afoi banido do terreno.", targetName));
     }
 
-    // TODO: Decide weather to allow offline players or not
     private static boolean handleTerritoryInput(Territory territory, Player player, String targetName) {
         OfflinePlayer member = Bukkit.getOfflinePlayer(targetName);
 
-        if (member == null) {
+        if (member == null || !member.hasPlayedBefore()) {
             player.sendMessage("§cJogador não encontrado.");
             return false;
         }

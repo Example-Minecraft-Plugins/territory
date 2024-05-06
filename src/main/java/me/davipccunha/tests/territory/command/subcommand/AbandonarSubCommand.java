@@ -4,8 +4,12 @@ import lombok.RequiredArgsConstructor;
 import me.davipccunha.tests.territory.TerritoryPlugin;
 import me.davipccunha.tests.territory.model.Territory;
 import me.davipccunha.tests.territory.model.TerritoryUser;
+import me.davipccunha.utils.inventory.InteractiveInventory;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class AbandonarSubCommand implements TerrenoSubCommand {
@@ -29,17 +33,21 @@ public class AbandonarSubCommand implements TerrenoSubCommand {
             return true;
         }
 
-        plugin.getTerritoryCache().remove(territory);
+        final Map<String, String> confirmNBTTags = Map.of(
+                "action", "confirm-abandon",
+                "location", territory.getCenter().serialize()
+        );
 
-        final TerritoryUser territoryUser = plugin.getUserRedisCache().get(player.getName());
-        territoryUser.removeTerritory(territory.getCenter());
+        final Map<String, String> cancelNBTTags = Map.of(
+                "action", "cancel-abandon",
+                "location", territory.getCenter().serialize()
+        );
 
-        plugin.getUserRedisCache().add(player.getName(), territoryUser);
+        final Inventory confirmationInventory = InteractiveInventory.createConfirmationInventory(
+                "Abandonar Terreno", confirmNBTTags, cancelNBTTags
+        );
 
-        if (territoryUser.getTerritories().isEmpty())
-            plugin.getUserRedisCache().remove(player.getName());
-
-        player.sendMessage("§aVocê abandonou o terreno com sucesso.");
+        player.openInventory(confirmationInventory);
 
         return true;
     }

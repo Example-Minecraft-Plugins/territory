@@ -38,7 +38,7 @@ public class TerritoryPlugin extends JavaPlugin {
 
     private void init() {
         saveDefaultConfig();
-        registerListeners(
+        this.registerListeners(
                 new BuildListener(this),
                 new EntityDamageEntityListener(this),
                 new PlayerInteractListener(this),
@@ -46,10 +46,9 @@ public class TerritoryPlugin extends JavaPlugin {
                 new AsyncPlayerChatListener(this),
                 new PlayerMoveListener(this)
         );
-        registerCommands();
+        this.registerCommands();
 
-        loadCaches();
-        territoryCache.load();
+        this.loadCaches();
 
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null)
             getLogger().warning("ProtocolLib not found. Some features may not work properly.");
@@ -69,5 +68,7 @@ public class TerritoryPlugin extends JavaPlugin {
         this.territoryCache = new TerritoryCache(this);
         this.territoryRedisCache = new RedisCache<>("territories:territories", Territory.class);
         this.userRedisCache = new RedisCache<>("territories:users", TerritoryUser.class);
+
+        territoryCache.load();
     }
 }
