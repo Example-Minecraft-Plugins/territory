@@ -2,3 +2,4 @@
 territories:
   min-size: 5
   max-size: 50
+  default-limit: 4

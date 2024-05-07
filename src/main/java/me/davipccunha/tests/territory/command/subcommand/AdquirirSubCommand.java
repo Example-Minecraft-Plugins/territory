@@ -4,15 +4,15 @@ import lombok.RequiredArgsConstructor;
 import me.davipccunha.tests.territory.TerritoryPlugin;
 import me.davipccunha.tests.territory.factory.config.TerritoryConfigFactory;
 import me.davipccunha.tests.territory.model.*;
-import me.davipccunha.tests.territory.util.TerritoryUtil;
+import me.davipccunha.utils.cache.RedisCache;
+import me.davipccunha.utils.permission.PermissionUtils;
 import me.davipccunha.utils.world.WorldUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class AdquirirSubCommand implements TerrenoSubCommand {
@@ -51,20 +51,33 @@ public class AdquirirSubCommand implements TerrenoSubCommand {
             return true;
         }
 
-        this.showTerritoryBorders(territory);
+        final RedisCache<TerritoryUser> cache = plugin.getUserRedisCache();
+
+        TerritoryUser territoryUser = cache.get(name);
+        if (territoryUser == null) {
+            territoryUser = new TerritoryUser(player.getName());
+            cache.add(player.getName(), territoryUser);
+        }
+
+        Optional<PermissionAttachmentInfo> maxLimitPermission = player.getEffectivePermissions().stream()
+                .filter(permission -> permission.getPermission().startsWith("territory.limit."))
+                .max(Comparator.comparingInt(permission -> NumberUtils.toInt(permission.getPermission().split("\\.")[2])));
+
+        final int defaultMaxLimit = plugin.getConfig().getInt("territories.default-limit");
+
+        final int maxLimit = maxLimitPermission.map(permissionAttachmentInfo ->
+                PermissionUtils.extractNumberSuffix(permissionAttachmentInfo.getPermission())).orElse(defaultMaxLimit);
+
+        if (territoryUser.getTerritoriesAmount() >= maxLimit && !player.hasPermission("territory.admin")) {
+            player.sendMessage("§cVocê já atingiu seu limite de homes.");
+            return true;
+        }
 
         plugin.getTerritoryCache().add(territory);
+        this.showTerritoryBorders(territory);
 
-        final TerritoryUser territoryUser = plugin.getUserRedisCache().get(name);
-
-        if (territoryUser == null) {
-            TerritoryUser newUser = new TerritoryUser(player.getName());
-            newUser.addTerritory(territory.getCenter());
-            plugin.getUserRedisCache().add(name, newUser);
-        } else {
-            territoryUser.addTerritory(territory.getCenter());
-            plugin.getUserRedisCache().add(name, territoryUser);
-        }
+        territoryUser.addTerritory(territory.getCenter());
+        cache.add(name, territoryUser);
 
         player.sendMessage(String.format("§aTerreno de tamanho %dx%d adquirido com sucesso.", territory.getSide(), territory.getSide()));
         return true;

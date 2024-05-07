@@ -72,10 +72,13 @@ public class EntityDamageEntityListener implements Listener {
     @EventHandler
     private void onHangingBreak(HangingBreakByEntityEvent event) {
         final Entity remover = event.getRemover();
+
         if (!(remover instanceof Player) && !(remover instanceof Projectile)) return;
         if (remover instanceof Projectile && !(((Projectile) remover).getShooter() instanceof Player)) return;
 
         final Player player = remover instanceof Projectile ? (Player) ((Projectile) remover).getShooter() : (Player) event.getRemover();
+
+        if (player.hasPermission("territory.admin")) return;
 
         final Territory territory = plugin.getTerritoryCache().getTerritory(event.getEntity().getLocation());
         if (territory == null) return;
@@ -89,6 +92,8 @@ public class EntityDamageEntityListener implements Listener {
     }
 
     private boolean handlePlayerDamagePlayer(Player damager, Player damaged) {
+        if (damager.hasPermission("territory.admin")) return false;
+
         final Territory damagerTerritory = plugin.getTerritoryCache().getTerritory(damager.getLocation());
         final Territory damagedTerritory = plugin.getTerritoryCache().getTerritory(damaged.getLocation());
 
@@ -104,6 +109,8 @@ public class EntityDamageEntityListener implements Listener {
     }
 
     private boolean handlePlayerDamageEntity(Player player, Entity entity) {
+        if (player.hasPermission("territory.admin")) return false;
+
         final Territory territory = plugin.getTerritoryCache().getTerritory(entity.getLocation());
 
         if (territory == null) return false;

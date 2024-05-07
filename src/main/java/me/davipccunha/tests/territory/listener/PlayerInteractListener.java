@@ -20,14 +20,16 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     private void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        Block block = event.getClickedBlock();
+        final Player player = event.getPlayer();
+        final Block block = event.getClickedBlock();
 
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
         if (player == null || block == null) return;
 
-        Territory territory = plugin.getTerritoryCache().getTerritory(block.getLocation());
+        if (player.hasPermission("territory.admin")) return;
+
+        final Territory territory = plugin.getTerritoryCache().getTerritory(block.getLocation());
         if (territory == null) return;
 
         final boolean isContainer = block.getState() instanceof InventoryHolder;
@@ -38,7 +40,7 @@ public class PlayerInteractListener implements Listener {
 
         if (!isContainer && !isDoor && !isAnvil) return;
 
-        TerritoryMemberConfig memberConfig = territory.getTerritoryConfig().getMemberConfig(player.getName());
+        final TerritoryMemberConfig memberConfig = territory.getTerritoryConfig().getMemberConfig(player.getName());
 
         if (memberConfig == null || !memberConfig.canInteract()) {
             player.sendMessage("§cVocê não pode interagir com blocos neste terreno.");
@@ -48,14 +50,16 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     private void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         if (player == null) return;
 
-        Territory territory = plugin.getTerritoryCache().getTerritory(event.getRightClicked().getLocation());
+        if (player.hasPermission("territory.admin")) return;
+
+        final Territory territory = plugin.getTerritoryCache().getTerritory(event.getRightClicked().getLocation());
         if (territory == null) return;
 
-        TerritoryMemberConfig memberConfig = territory.getTerritoryConfig().getMemberConfig(player.getName());
+        final TerritoryMemberConfig memberConfig = territory.getTerritoryConfig().getMemberConfig(player.getName());
 
         if (memberConfig == null || !memberConfig.canInteract()) {
             player.sendMessage("§cVocê não pode interagir com entidades neste terreno.");

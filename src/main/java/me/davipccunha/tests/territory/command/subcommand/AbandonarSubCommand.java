@@ -22,13 +22,13 @@ public class AbandonarSubCommand implements TerrenoSubCommand {
         final int x = location.getBlockX();
         final int z = location.getBlockZ();
 
-        Territory territory = plugin.getTerritoryCache().getTerritory(x, z);
+        final Territory territory = plugin.getTerritoryCache().getTerritory(x, z);
         if (territory == null) {
             player.sendMessage("§cVocê não está em um terreno.");
             return true;
         }
 
-        if (!territory.getOwner().equals(player.getName())) {
+        if (!territory.getOwner().equals(player.getName()) && !player.hasPermission("territory.admin")) {
             player.sendMessage("§cApenas o dono do terreno pode abandoná-lo.");
             return true;
         }

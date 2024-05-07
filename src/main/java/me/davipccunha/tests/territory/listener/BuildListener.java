@@ -36,6 +36,8 @@ public class BuildListener implements Listener {
     }
 
     private boolean verifyPermission(Block block, Player player, String denialMessage) {
+        if (player.hasPermission("territory.admin")) return true;
+
         Territory territory = plugin.getTerritoryCache().getTerritory(block.getLocation());
         if (territory == null) return true;
 
