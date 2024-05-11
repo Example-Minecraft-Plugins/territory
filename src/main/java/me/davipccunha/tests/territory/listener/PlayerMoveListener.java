@@ -47,7 +47,7 @@ public class PlayerMoveListener implements Listener {
         if (player == null) return;
 
         // If the player is an admin, there's no need for further verifications since he can bypass all territory restrictions
-        if (player.hasPermission("territory.admin")) return;
+        if (player.hasPermission("territory.admin.bypass")) return;
 
         final Location location = event.getTo();
         if (location == null) return;

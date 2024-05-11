@@ -78,7 +78,7 @@ public class EntityDamageEntityListener implements Listener {
 
         final Player player = remover instanceof Projectile ? (Player) ((Projectile) remover).getShooter() : (Player) event.getRemover();
 
-        if (player.hasPermission("territory.admin")) return;
+        if (player.hasPermission("territory.admin.damage")) return;
 
         final Territory territory = plugin.getTerritoryCache().getTerritory(event.getEntity().getLocation());
         if (territory == null) return;
@@ -109,7 +109,7 @@ public class EntityDamageEntityListener implements Listener {
     }
 
     private boolean handlePlayerDamageEntity(Player player, Entity entity) {
-        if (player.hasPermission("territory.admin")) return false;
+        if (player.hasPermission("territory.admin.damage")) return false;
 
         final Territory territory = plugin.getTerritoryCache().getTerritory(entity.getLocation());
 

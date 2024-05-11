@@ -5,7 +5,7 @@ import me.davipccunha.tests.territory.TerritoryPlugin;
 import me.davipccunha.tests.territory.factory.config.TerritoryConfigFactory;
 import me.davipccunha.tests.territory.model.*;
 import me.davipccunha.utils.cache.RedisCache;
-import me.davipccunha.utils.permission.PermissionUtils;
+import me.davipccunha.utils.player.PermissionUtils;
 import me.davipccunha.utils.world.WorldUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Location;
@@ -68,8 +68,8 @@ public class AdquirirSubCommand implements TerrenoSubCommand {
         final int maxLimit = maxLimitPermission.map(permissionAttachmentInfo ->
                 PermissionUtils.extractNumberSuffix(permissionAttachmentInfo.getPermission())).orElse(defaultMaxLimit);
 
-        if (territoryUser.getTerritoriesAmount() >= maxLimit && !player.hasPermission("territory.admin")) {
-            player.sendMessage("§cVocê já atingiu seu limite de homes.");
+        if (territoryUser.getTerritoriesAmount() >= maxLimit && !player.hasPermission("territory.admin.no-limit")) {
+            player.sendMessage("§cVocê já atingiu seu limite de terrenos.");
             return true;
         }
 

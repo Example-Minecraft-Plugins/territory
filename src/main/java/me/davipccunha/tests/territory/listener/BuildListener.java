@@ -7,6 +7,7 @@ import me.davipccunha.tests.territory.model.TerritoryMemberConfig;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -15,7 +16,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class BuildListener implements Listener {
     private final TerritoryPlugin plugin;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     private void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
@@ -25,7 +26,7 @@ public class BuildListener implements Listener {
             event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     private void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
@@ -36,12 +37,12 @@ public class BuildListener implements Listener {
     }
 
     private boolean verifyPermission(Block block, Player player, String denialMessage) {
-        if (player.hasPermission("territory.admin")) return true;
+        if (player.hasPermission("territory.admin.build")) return true;
 
-        Territory territory = plugin.getTerritoryCache().getTerritory(block.getLocation());
+        final Territory territory = plugin.getTerritoryCache().getTerritory(block.getLocation());
         if (territory == null) return true;
 
-        TerritoryMemberConfig memberConfig = territory.getTerritoryConfig().getMemberConfig(player.getName());
+        final TerritoryMemberConfig memberConfig = territory.getTerritoryConfig().getMemberConfig(player.getName());
 
         if (memberConfig == null || !memberConfig.canBuild()) {
             player.sendMessage(denialMessage);

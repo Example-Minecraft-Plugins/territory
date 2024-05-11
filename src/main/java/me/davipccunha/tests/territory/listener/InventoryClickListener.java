@@ -61,7 +61,7 @@ public class InventoryClickListener implements Listener {
 
         if (territory == null) return;
 
-        if (!territory.getOwner().equals(player.getName()) && !player.hasPermission("territory.admin")) {
+        if (!territory.getOwner().equals(player.getName()) && !player.hasPermission("territory.admin.manage")) {
             player.sendMessage("§cApenas o dono do terreno pode alterar suas configurações.");
             return;
         }

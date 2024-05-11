@@ -18,7 +18,7 @@ import org.bukkit.inventory.InventoryHolder;
 public class PlayerInteractListener implements Listener {
     private final TerritoryPlugin plugin;
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH)
     private void onPlayerInteract(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
         final Block block = event.getClickedBlock();
@@ -27,7 +27,7 @@ public class PlayerInteractListener implements Listener {
 
         if (player == null || block == null) return;
 
-        if (player.hasPermission("territory.admin")) return;
+        if (player.hasPermission("territory.admin.interact")) return;
 
         final Territory territory = plugin.getTerritoryCache().getTerritory(block.getLocation());
         if (territory == null) return;
@@ -48,13 +48,13 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     private void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         final Player player = event.getPlayer();
 
         if (player == null) return;
 
-        if (player.hasPermission("territory.admin")) return;
+        if (player.hasPermission("territory.admin.interact")) return;
 
         final Territory territory = plugin.getTerritoryCache().getTerritory(event.getRightClicked().getLocation());
         if (territory == null) return;

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.davipccunha.tests.territory.TerritoryPlugin;
 import me.davipccunha.tests.territory.model.Territory;
 import me.davipccunha.tests.territory.model.TerritoryUser;
+import me.davipccunha.utils.cache.RedisCache;
 import me.davipccunha.utils.inventory.InteractiveInventory;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -28,7 +29,25 @@ public class AbandonarSubCommand implements TerrenoSubCommand {
             return true;
         }
 
-        if (!territory.getOwner().equals(player.getName()) && !player.hasPermission("territory.admin")) {
+        final RedisCache<TerritoryUser> cache = plugin.getUserRedisCache();
+
+        if (player.hasPermission("territory.admin.delete")) {
+            final String owner = territory.getOwner();
+            plugin.getTerritoryCache().remove(territory);
+
+            final TerritoryUser territoryUser = cache.get(owner);
+            territoryUser.removeTerritory(territory.getCenter());
+
+            cache.add(owner, territoryUser);
+
+            if (territoryUser.getTerritories().isEmpty())
+                cache.remove(owner);
+
+            player.sendMessage("§aVocê abandonou o terreno com sucesso.");
+            return true;
+        }
+
+        if (!territory.getOwner().equals(player.getName())) {
             player.sendMessage("§cApenas o dono do terreno pode abandoná-lo.");
             return true;
         }
