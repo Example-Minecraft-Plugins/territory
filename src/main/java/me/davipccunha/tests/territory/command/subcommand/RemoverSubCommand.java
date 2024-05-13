@@ -13,10 +13,7 @@ public class RemoverSubCommand implements TerrenoSubCommand {
     @Override
     public boolean execute(Player player, String[] args) {
 
-        if (args.length < 2) {
-            player.sendMessage("§cInforme o jogador que deseja remover do terreno.");
-            return false;
-        }
+        if (args.length < 2) return false;
 
         final Location location = player.getLocation();
         final int x = location.getBlockX();
@@ -33,7 +30,7 @@ public class RemoverSubCommand implements TerrenoSubCommand {
             return true;
         }
 
-        String playerName = args[1];
+        final String playerName = args[1];
         if (!territory.getTerritoryConfig().hasMember(playerName)) {
             player.sendMessage("§cEste jogador não está é membro do terreno.");
             return true;
@@ -47,6 +44,6 @@ public class RemoverSubCommand implements TerrenoSubCommand {
 
     @Override
     public String getUsage() {
-        return "§e/terreno remover <jogador>";
+        return "/terreno remover <jogador>";
     }
 }

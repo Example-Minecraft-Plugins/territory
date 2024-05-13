@@ -9,7 +9,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Getter
 public class TerritoryUser {
-    private final String name;
+    private final String username;
     private final Set<TerritoryBlock> territories = new HashSet<>();
 
     public void addTerritory(TerritoryBlock center) {
@@ -29,11 +29,11 @@ public class TerritoryUser {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         TerritoryUser other = (TerritoryUser) obj;
-        return name.equals(other.name);
+        return username.equals(other.username);
     }
 
     @Override
     public int hashCode() {
-        return this.name.hashCode();
+        return this.username.hashCode();
     }
 }

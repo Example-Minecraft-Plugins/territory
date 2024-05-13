@@ -19,7 +19,7 @@ public class InfoSubCommand implements TerrenoSubCommand {
             return true;
         }
 
-        Inventory territoryGUI = TerritoryConfigGUI.createTerritoryConfigGUI(territory);
+        final Inventory territoryGUI = TerritoryConfigGUI.createTerritoryConfigGUI(territory);
         player.openInventory(territoryGUI);
 
         return true;

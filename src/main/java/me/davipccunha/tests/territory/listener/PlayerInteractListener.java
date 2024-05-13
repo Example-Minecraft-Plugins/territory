@@ -18,7 +18,7 @@ import org.bukkit.inventory.InventoryHolder;
 public class PlayerInteractListener implements Listener {
     private final TerritoryPlugin plugin;
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOW)
     private void onPlayerInteract(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
         final Block block = event.getClickedBlock();
@@ -48,7 +48,7 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOW)
     private void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         final Player player = event.getPlayer();
 

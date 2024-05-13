@@ -9,6 +9,7 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
@@ -18,7 +19,7 @@ public class EntityDamageEntityListener implements Listener {
     private final TerritoryPlugin plugin;
 
     // Canceling PvP in territories where it is disabled
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     private void onPlayerDamagePlayer(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) return;
 
@@ -30,7 +31,7 @@ public class EntityDamageEntityListener implements Listener {
     }
 
     // Canceling PvP in territories where it is disabled
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     private void onProjectileDamagePlayer(EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Projectile)) return;
 
@@ -45,7 +46,7 @@ public class EntityDamageEntityListener implements Listener {
     }
 
     // Canceling entity damage in territories from members who are not allowed to do so
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     private void onPlayerDamageEntity(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
         if (event.getEntity() instanceof Player) return; // PvP is handled in another event
@@ -56,7 +57,7 @@ public class EntityDamageEntityListener implements Listener {
         event.setCancelled(cancel);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     private void onProjectileDamageEntity(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Projectile)) return;
 
@@ -69,7 +70,7 @@ public class EntityDamageEntityListener implements Listener {
     }
 
     // Breaking paintings does not fire the EntityDamageByEntityEvent, so we need to handle it separately
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     private void onHangingBreak(HangingBreakByEntityEvent event) {
         final Entity remover = event.getRemover();
 

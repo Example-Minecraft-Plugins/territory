@@ -11,10 +11,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TerritoryConfigGUI {
     public static Inventory createTerritoryConfigGUI(Territory territory) {
-        String territoryCenter = territory.getCenter().serialize();
+        final String territoryCenter = territory.getCenter().serialize();
 
         Inventory inventory = Bukkit.createInventory(null, 4 * 9, "Gerenciar Terreno");
 
@@ -32,10 +33,10 @@ public class TerritoryConfigGUI {
         signMeta.setLore(territoryInfoLore);
         sign.setItemMeta(signMeta);
 
-        HashMap<String, String> accessibleTags = new HashMap<>() {{
-            put("action", "toggleAccessible");
-            put("location", territoryCenter);
-        }};
+        final Map<String, String> accessibleTags = Map.of(
+            "action", "toggleAccessible",
+            "location", territoryCenter
+        );
 
         final ItemStack accessible = InteractiveInventory.createToggleItem(
                 territory.getTerritoryConfig().isAccessible(),
@@ -44,10 +45,10 @@ public class TerritoryConfigGUI {
                 "§f * Permite a entrada de jogadores não adicionados");
 
 
-        final HashMap<String, String> pvpTags = new HashMap<>() {{
-            put("action", "togglePvp");
-            put("location", territoryCenter);
-        }};
+        final Map<String, String> pvpTags = Map.of(
+            "action", "togglePvp",
+            "location", territoryCenter
+        );
 
         final ItemStack pvp = InteractiveInventory.createToggleItem(
                 territory.getTerritoryConfig().isPvpEnabled(),
@@ -56,10 +57,10 @@ public class TerritoryConfigGUI {
                 "§f * Permite que jogadores se ataquem no terreno");
 
 
-        final HashMap<String, String> membersTags = new HashMap<>() {{
-            put("action", "members");
-            put("location", territoryCenter);
-        }};
+        final Map<String, String> membersTags = Map.of(
+            "action", "members",
+            "location", territoryCenter
+        );
 
         final List<String> membersLore = List.of(
                 "§7  Clique para gerenciar os membros do terreno"

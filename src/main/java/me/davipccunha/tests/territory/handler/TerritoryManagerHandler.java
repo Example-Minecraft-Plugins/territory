@@ -2,6 +2,7 @@ package me.davipccunha.tests.territory.handler;
 
 import me.davipccunha.tests.territory.cache.TerritoryCache;
 import me.davipccunha.tests.territory.model.Territory;
+import me.davipccunha.utils.messages.ErrorMessages;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -56,12 +57,12 @@ public class TerritoryManagerHandler {
         OfflinePlayer member = Bukkit.getOfflinePlayer(targetName);
 
         if (member == null || !member.hasPlayedBefore()) {
-            player.sendMessage("§cJogador não encontrado.");
+            player.sendMessage(ErrorMessages.PLAYER_NOT_FOUND.getMessage());
             return false;
         }
 
         if (territory == null) {
-            player.sendMessage("§cOcorreu um erro interno. Contate a nossa equipe.");
+            player.sendMessage(ErrorMessages.INTERNAL_ERROR.getMessage());
             return false;
         }
 

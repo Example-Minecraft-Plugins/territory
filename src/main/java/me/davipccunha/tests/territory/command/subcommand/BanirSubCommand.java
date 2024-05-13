@@ -13,10 +13,7 @@ public class BanirSubCommand implements TerrenoSubCommand {
 
     @Override
     public boolean execute(Player player, String[] args) {
-        if (args.length < 2) {
-            player.sendMessage("§cInforme o jogador que deseja banir.");
-            return false;
-        }
+        if (args.length < 2) return false;
 
         final Location location = player.getLocation();
         final int x = location.getBlockX();
@@ -33,7 +30,7 @@ public class BanirSubCommand implements TerrenoSubCommand {
             return true;
         }
 
-        String playerName = args[1];
+        final String playerName = args[1];
 
         TerritoryManagerHandler.handleBanPlayerInput(plugin.getTerritoryCache(), territory, player, playerName);
 
@@ -42,6 +39,6 @@ public class BanirSubCommand implements TerrenoSubCommand {
 
     @Override
     public String getUsage() {
-        return "§e/terreno banir <jogador>";
+        return "/terreno banir <jogador>";
     }
 }

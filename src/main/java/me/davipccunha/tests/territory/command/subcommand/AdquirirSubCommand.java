@@ -53,10 +53,10 @@ public class AdquirirSubCommand implements TerrenoSubCommand {
 
         final RedisCache<TerritoryUser> cache = plugin.getUserRedisCache();
 
-        TerritoryUser territoryUser = cache.get(name);
+        TerritoryUser territoryUser = cache.get(name.toLowerCase());
         if (territoryUser == null) {
             territoryUser = new TerritoryUser(player.getName());
-            cache.add(player.getName(), territoryUser);
+            cache.add(player.getName().toLowerCase(), territoryUser);
         }
 
         Optional<PermissionAttachmentInfo> maxLimitPermission = player.getEffectivePermissions().stream()
@@ -77,7 +77,7 @@ public class AdquirirSubCommand implements TerrenoSubCommand {
         this.showTerritoryBorders(territory);
 
         territoryUser.addTerritory(territory.getCenter());
-        cache.add(name, territoryUser);
+        cache.add(name.toLowerCase(), territoryUser);
 
         player.sendMessage(String.format("§aTerreno de tamanho %dx%d adquirido com sucesso.", territory.getSide(), territory.getSide()));
         return true;

@@ -12,10 +12,7 @@ public class DesbanirSubCommand implements TerrenoSubCommand {
 
     @Override
     public boolean execute(Player player, String[] args) {
-        if (args.length < 2) {
-            player.sendMessage("§cInforme o jogador que deseja desbanir.");
-            return false;
-        }
+        if (args.length < 2) return false;
 
         final Location location = player.getLocation();
         final int x = location.getBlockX();
@@ -32,7 +29,7 @@ public class DesbanirSubCommand implements TerrenoSubCommand {
             return true;
         }
 
-        String playerName = args[1];
+        final String playerName = args[1];
         if (!territory.getTerritoryConfig().isBanned(playerName)) {
             player.sendMessage("§cEste jogador não está banido do terreno.");
             return true;
@@ -46,6 +43,6 @@ public class DesbanirSubCommand implements TerrenoSubCommand {
 
     @Override
     public String getUsage() {
-        return "§e/terreno desbanir <jogador>";
+        return "/terreno desbanir <jogador>";
     }
 }

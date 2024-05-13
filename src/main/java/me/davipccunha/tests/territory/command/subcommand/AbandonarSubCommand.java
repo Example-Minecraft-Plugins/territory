@@ -32,7 +32,7 @@ public class AbandonarSubCommand implements TerrenoSubCommand {
         final RedisCache<TerritoryUser> cache = plugin.getUserRedisCache();
 
         if (player.hasPermission("territory.admin.delete")) {
-            final String owner = territory.getOwner();
+            final String owner = territory.getOwner().toLowerCase();
             plugin.getTerritoryCache().remove(territory);
 
             final TerritoryUser territoryUser = cache.get(owner);
@@ -73,6 +73,6 @@ public class AbandonarSubCommand implements TerrenoSubCommand {
 
     @Override
     public String getUsage() {
-        return "§e/terreno abandonar";
+        return "/terreno abandonar";
     }
 }

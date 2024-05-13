@@ -14,10 +14,7 @@ public class AdicionarSubCommand implements TerrenoSubCommand {
     @Override
     public boolean execute(Player player, String[] args) {
 
-        if (args.length < 2) {
-            player.sendMessage("§cInforme o jogador que deseja adicionar como membro.");
-            return false;
-        }
+        if (args.length < 2) return false;
 
         final Location location = player.getLocation();
         final int x = location.getBlockX();
@@ -34,7 +31,7 @@ public class AdicionarSubCommand implements TerrenoSubCommand {
             return true;
         }
 
-        String playerName = args[1];
+        final String playerName = args[1];
 
         TerritoryManagerHandler.handleAddMemberInput(plugin.getTerritoryCache(), territory, player, playerName);
 
@@ -43,6 +40,6 @@ public class AdicionarSubCommand implements TerrenoSubCommand {
 
     @Override
     public String getUsage() {
-        return "§e/terreno adicionar <jogador>";
+        return "/terreno adicionar <jogador>";
     }
 }

@@ -52,7 +52,7 @@ public class PlayerMoveListener implements Listener {
         final Location location = event.getTo();
         if (location == null) return;
 
-        // PlayerMoveEvent fires even if the player changes the pitch or yaw, so we check the actual position change to avoid unnecessary calls
+        // PlayerMoveEvent fires even if the player changes the pitch or yaw, so we check the actual position change to avoid unnecessary verifications
         if (location.getBlockX() == event.getFrom().getBlockX() && location.getBlockZ() == event.getFrom().getBlockZ()) return;
 
         final TerritoryCache cache = plugin.getTerritoryCache();
